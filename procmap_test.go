@@ -15,7 +15,7 @@ import (
 )
 
 func TestQuery(t *testing.T) {
-	const pageSize = 4096
+	pageSize := os.Getpagesize()
 	const prot = syscall.PROT_READ | syscall.PROT_EXEC
 	const flags = syscall.MAP_PRIVATE | syscall.MAP_ANONYMOUS
 
@@ -37,10 +37,10 @@ func TestQuery(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Query failed: %v", err)
 		}
-		if q.VMAStart != uint64(addr) || q.VMAEnd != uint64(addr+pageSize) {
+		if q.VMAStart != uint64(addr) || q.VMAEnd != uint64(addr+uintptr(pageSize)) {
 			t.Errorf("VMA range mismatch: start=0x%x end=0x%x", q.VMAStart, q.VMAEnd)
 		}
-		if q.VMAPageSize != pageSize {
+		if q.VMAPageSize != uint64(pageSize) {
 			t.Errorf("page size mismatch: got %d, want %d", q.VMAPageSize, pageSize)
 		}
 		if name != "" {
