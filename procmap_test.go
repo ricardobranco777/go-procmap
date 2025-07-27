@@ -9,21 +9,26 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"syscall"
 	"testing"
 	"unsafe"
+
+	"golang.org/x/sys/unix"
 )
 
 func TestQuery(t *testing.T) {
 	pageSize := os.Getpagesize()
-	const prot = syscall.PROT_READ | syscall.PROT_EXEC
-	const flags = syscall.MAP_PRIVATE | syscall.MAP_ANONYMOUS
+	const prot = unix.PROT_READ | unix.PROT_EXEC
+	const flags = unix.MAP_PRIVATE | unix.MAP_ANONYMOUS
 
-	b, err := syscall.Mmap(-1, 0, pageSize, prot, flags)
+	b, err := unix.Mmap(-1, 0, pageSize, prot, flags)
 	if err != nil {
 		t.Fatalf("mmap failed: %v", err)
 	}
-	defer syscall.Munmap(b)
+	defer func() {
+		if err := unix.Munmap(b); err != nil {
+			t.Fatalf("munmap failed: %v", err)
+		}
+	}()
 
 	addr := uintptr(unsafe.Pointer(&b[0]))
 	fd, err := os.Open(fmt.Sprintf("/proc/%d/maps", os.Getpid()))
