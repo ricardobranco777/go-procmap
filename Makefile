@@ -17,3 +17,9 @@ test:
 clean:
 	$(GO) clean -a
 	$(RM) $(BIN)
+
+.PHONY: gen
+gen:
+	$(RM) go.mod go.sum
+	$(GO) mod init github.com/ricardobranco777/go-$(BIN)
+	$(GO) mod tidy

@@ -1,4 +1,6 @@
 
+![Build Status](https://github.com/ricardobranco777/go-procmap/actions/workflows/ci.yml/badge.svg)
+
 Call **PROCMAP_QUERY** ioctl from Golang on Linux.
 
 From the [documentation](https://docs.kernel.org/filesystems/proc.html):

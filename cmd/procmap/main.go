@@ -9,7 +9,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/ricardobranco777/procmap"
+	procmap "github.com/ricardobranco777/go-procmap"
 )
 
 func formatFlags(flags uint64) string {
