@@ -39,7 +39,7 @@ func formatFlags(flags uint64) string {
 
 func main() {
 	flag.Usage = func() {
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s PID\n", os.Args[0])
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s PID\n", os.Args[0]) //nolint:errcheck
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -58,7 +58,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to open %s: %v", path, err)
 	}
-	defer file.Close()
+	defer file.Close() //nolint:errcheck
 
 	addr := uint64(0)
 	for {

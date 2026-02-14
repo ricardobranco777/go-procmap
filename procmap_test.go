@@ -35,7 +35,7 @@ func TestQuery(t *testing.T) {
 	if err != nil {
 		t.Fatalf("open /proc/self/maps failed: %v", err)
 	}
-	defer fd.Close()
+	defer fd.Close() //nolint:errcheck
 
 	t.Run("Exact match", func(t *testing.T) {
 		q, name, buildID, err := Query(int(fd.Fd()), uint64(addr), 0)
@@ -105,7 +105,7 @@ func TestProcmapAgainstProcMaps(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to open maps file: %v", err)
 	}
-	defer file.Close()
+	defer file.Close() //nolint:errcheck
 
 	fd := int(file.Fd())
 
